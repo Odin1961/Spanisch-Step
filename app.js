@@ -31,7 +31,7 @@ function save(){
   saveTimer=setTimeout(()=>{
     AppStability.safe(()=>{
       AppStability.sanitizeProfile(profile);
-      localStorage.setItem(key,JSON.stringify(profile));
+      Store.save(profile);
     },"save-profile");
   },60);
 }
@@ -40,7 +40,7 @@ function saveNow(){
   clearTimeout(saveTimer);
   AppStability.safe(()=>{
     AppStability.sanitizeProfile(profile);
-    localStorage.setItem(key,JSON.stringify(profile));
+    Store.save(profile);
   },"save-profile-now");
 }
 
@@ -700,14 +700,117 @@ function startMode(mode,fromCoach=false){
     mode="vocab";
   }
 
-  if(fromCoach) coachSession.active=true;
+  if(fromCoach)coachSession.active=true;
   profile.lastMode=mode;
   save();
-  if(mode==="vocab") return vocabStart();
-  if(mode==="grammar") return grammarStart();
-  if(mode==="dialogue") return dialogueQuestion();
-  if(mode==="pronunciation") return pronunciationStart();
+
+  if(mode==="vocab"){
+    return fromCoach?vocabQuestion():vocabStart();
+  }
+
+  if(mode==="grammar"){
+    return fromCoach?grammarQuestion():grammarStart();
+  }
+
+  if(mode==="dialogue"){
+    if(fromCoach){
+      const scenarios=ES_BRANCHING_SCENARIOS_151||[];
+      const scenario=scenarios[Math.floor(Math.random()*scenarios.length)];
+      if(scenario){
+        return startContinuousDialogue("branch",scenario.id,"Alle");
+      }
+    }
+    return dialogueQuestion();
+  }
+
+  if(mode==="pronunciation"){
+    return fromCoach?pronunciationQuestion():pronunciationStart();
+  }
+
   return translationQuestion();
+}
+
+function startCoachSession(minutes=null){
+  const plan=CoachEngine.startPlan(
+    profile,
+    minutes||profile.coachMinutes||15
+  );
+
+  coachSession={
+    active:true,
+    answered:0,
+    correct:0,
+    points:0,
+    startedAt:Date.now(),
+    planId:plan.id
+  };
+
+  continueCoach();
+}
+
+function continueCoach(){
+  if(!coachSession.active)return;
+
+  const mode=CoachEngine.next(profile);
+  if(!mode){
+    stopCoachSession();
+    return;
+  }
+
+  startMode(mode,true);
+}
+
+function stopCoachSession(){
+  if(!coachSession.active){
+    coachView();
+    return;
+  }
+
+  const minutes=Math.max(
+    1,
+    Math.round(
+      (Date.now()-(coachSession.startedAt||Date.now()))/60000
+    )
+  );
+  const answered=coachSession.answered||0;
+  const correct=coachSession.correct||0;
+  const points=coachSession.points||0;
+  const accuracy=answered
+    ? Math.round(correct/answered*100)
+    : 0;
+
+  CoachEngine.finishSession({
+    minutes,
+    answered,
+    correct,
+    points
+  });
+
+  coachSession.active=false;
+  saveNow();
+
+  title.textContent="Coach";
+  root.innerHTML=`
+    <section class="card">
+      <h2>Lerneinheit abgeschlossen</h2>
+      <div class="stats">
+        <div class="stat"><strong>${answered}</strong><span>Aufgaben</span></div>
+        <div class="stat"><strong>${correct}</strong><span>richtig</span></div>
+        <div class="stat"><strong>${accuracy}%</strong><span>Trefferquote</span></div>
+        <div class="stat"><strong>${points}</strong><span>Punkte</span></div>
+      </div>
+      <div class="row">
+        <button class="primary" id="coachContinueSession">Weiterlernen</button>
+        <button class="secondary" id="coachOverview">Coach-Übersicht</button>
+        <button class="secondary" id="coachHome">Startseite</button>
+      </div>
+    </section>`;
+
+  document.getElementById("coachContinueSession").onclick=()=>{
+    startCoachSession();
+  };
+  document.getElementById("coachOverview").onclick=coachView;
+  document.getElementById("coachHome").onclick=()=>nav("home");
 }
 
 function resultView(ok,correct,nextMode){
@@ -731,12 +834,14 @@ function resultView(ok,correct,nextMode){
   document.getElementById("nextBtn").classList.remove("hidden");
   document.getElementById("nextBtn").textContent=coachSession.active?"Im Coach weiter":"Weiter";
   document.getElementById("nextBtn").onclick=()=>{
-    if(coachSession.active) startMode(CoachEngine.next(profile),true);
+    if(coachSession.active) continueCoach();
     else if((nextMode||profile.lastMode)==="vocab") vocabQuestion();
     else if((nextMode||profile.lastMode)==="grammar") grammarQuestion();
     else startMode(nextMode||profile.lastMode||"vocab");
   };
 }
+
+let vocabularyAnswerLocked=false;
 
 function vocabStart(){
   title.textContent="Vokabeln";
@@ -762,6 +867,7 @@ function vocabStart(){
 }
 
 function vocabQuestion(){
+  vocabularyAnswerLocked=false;
   title.textContent="Vokabeln";
   try{currentQuestion=VocabularyEngine.makeQuestion(profile.level,profile.vocabTopic||"Alle")}catch(error){
     root.innerHTML=`<section class="card"><h2>Keine Vokabeln gefunden</h2><p>${error.message}</p><button class="primary" id="backVocab">Thema wählen</button></section>`;
@@ -796,10 +902,13 @@ function vocabQuestion(){
     b.className="choice";
     b.textContent=a;
     b.onclick=()=>{
+      if(vocabularyAnswerLocked)return;
+      vocabularyAnswerLocked=true;
+
       const ok=a===currentQuestion.item.de;
       VocabularyEngine.mark(currentQuestion.item.id,ok);
-      resultView(ok,currentQuestion.item.de,"vocab");
       document.querySelectorAll(".choice").forEach(x=>x.disabled=true);
+      resultView(ok,currentQuestion.item.de,"vocab");
     };
     document.getElementById("answerGrid").appendChild(b);
   });
@@ -939,7 +1048,7 @@ function answerGrammar(choice){
   if(coachSession.active){
     coachSession.answered++;
     if(correct)coachSession.correct++;
-    coachSession.points+=correct?10:0;
+    coachSession.points+=correct?10:3;
     CoachEngine.record("grammar",correct)
   }
   save();
