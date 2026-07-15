@@ -253,3 +253,14 @@ button:focus-visible,select:focus-visible,input:focus-visible{
 .update-banner button{
   padding:7px 11px;
 }
+
+
+.bottom-nav{
+  position:relative;
+  z-index:10000;
+  pointer-events:auto;
+}
+.nav-btn{
+  pointer-events:auto !important;
+  touch-action:manipulation;
+}

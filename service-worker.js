@@ -1,4 +1,4 @@
-const CACHE="espanol-step-2.1";
+const CACHE="espanol-step-2.1.2";
 const CORE=[
   "./","./index.html","./style.css","./manifest.webmanifest",
   "./icon-180.png","./icon-512.png","./content.js",

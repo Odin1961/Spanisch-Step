@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.1.2
+- Klassenfehler `.nav-button` zu `.nav-btn` korrigiert
+- Hauptnavigation neu gebunden
+- Navigationssperre entfernt
+- Aussprache-Weiter-Schaltung repariert
+- Aufnahmezustand beim nächsten Satz zurückgesetzt
+- unmittelbare Satzwiederholung verhindert
+
+## 2.1.1
+- fehlerhaften Profilspeicher-Schlüssel korrigiert
+- fehlende Coach-Funktionen wiederhergestellt
+- Coach öffnet Übungen jetzt direkt
+- Vokabeltrainer gegen doppelte Bewertung abgesichert
+- Runtime-Skriptreihenfolge korrigiert
+- vollständige Regressionstests ergänzt
+
 ## 2.1
 - Runtime-Startprüfung ergänzt
 - sichere Sitzungswiederherstellung ergänzt

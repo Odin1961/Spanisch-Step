@@ -317,40 +317,58 @@ function speak(text,options){
 window.addEventListener("beforeunload",saveNow);
 
 function stopActiveTraining(){
-  try{SpeechController.stop()}catch{}
-  try{stopPronunciationRecognition?.()}catch{}
+  try{
+    if(typeof SpeechController!=="undefined"){
+      SpeechController.stop();
+    }
+  }catch{}
 
-  if(
-    typeof continuousDialogue!=="undefined" &&
-    continuousDialogue?.active
-  ){
-    continuousDialogue.active=false;
-    continuousDialogue.token=(continuousDialogue.token||0)+1;
-  }
+  try{
+    if(typeof stopPronunciationRecognition==="function"){
+      stopPronunciationRecognition();
+    }
+  }catch{}
 
-  pronunciationListening=false;
+  try{
+    if(
+      typeof continuousDialogue!=="undefined" &&
+      continuousDialogue &&
+      continuousDialogue.active
+    ){
+      continuousDialogue.active=false;
+      continuousDialogue.token=(continuousDialogue.token||0)+1;
+    }
+  }catch{}
+
+  try{
+    if(typeof pronunciationListening!=="undefined"){
+      pronunciationListening=false;
+    }
+  }catch{}
 }
 
 function nav(to){
-  if(AppStability.navigationLock)return;
-  AppStability.navigationLock=true;
+  const validRoutes=["home","coach","free","progress","settings"];
+  const target=validRoutes.includes(to)?to:"home";
 
   try{
     stopActiveTraining();
+  }catch(error){
+    console.warn("Laufendes Training konnte nicht vollständig beendet werden.",error);
+  }
 
-    route=to;
-    document.querySelectorAll(".nav-button").forEach(button=>{
-      button.classList.toggle("active",button.dataset.route===to);
-    });
+  route=target;
 
+  document.querySelectorAll(".nav-btn").forEach(button=>{
+    button.classList.toggle("active",button.dataset.route===target);
+  });
+
+  try{
     render();
   }catch(error){
-    AppStability.record(error,`navigation:${to}`);
-    AppStability.showRecovery(`Navigation ${to}`);
-  }finally{
-    setTimeout(()=>{
-      AppStability.navigationLock=false;
-    },80);
+    AppStability.record(error,`navigation:${target}`);
+    route="home";
+    homeView();
   }
 }
 
@@ -1836,10 +1854,25 @@ function pronunciationQuestion(){
   stopPronunciationRecognition();
   title.textContent="Aussprache";
 
-  currentPronunciationItem=PronunciationEngine.next(
+  const previousPronunciationId=currentPronunciationItem?.id||null;
+  let nextPronunciationItem=PronunciationEngine.next(
     profile.level,
     profile.pronunciationTopic||"Alle"
   );
+
+  if(
+    nextPronunciationItem &&
+    previousPronunciationId &&
+    nextPronunciationItem.id===previousPronunciationId
+  ){
+    const alternative=PronunciationEngine.next(
+      profile.level,
+      profile.pronunciationTopic||"Alle"
+    );
+    if(alternative)nextPronunciationItem=alternative;
+  }
+
+  currentPronunciationItem=nextPronunciationItem;
 
   if(!currentPronunciationItem){
     root.innerHTML=`
@@ -1891,7 +1924,13 @@ function pronunciationQuestion(){
     stopPronunciationRecognition();
     pronunciationStart();
   };
-  document.getElementById("pronunciationNext").onclick=pronunciationQuestion;
+  document.getElementById("pronunciationNext").onclick=()=>{
+    stopPronunciationRecognition();
+    pronunciationFinalText="";
+    pronunciationInterimText="";
+    pronunciationConfidence=0;
+    pronunciationQuestion();
+  };
 }
 
 function createPronunciationRecognition(){
@@ -2124,7 +2163,9 @@ function evaluatePronunciationRecording(){
     {interrupt:true}
   );
   document.getElementById("pronunciationRetry").onclick=startPronunciationRecognition;
-  document.getElementById("pronunciationNext").classList.remove("hidden");
+  const nextPronunciationButton=document.getElementById("pronunciationNext");
+  nextPronunciationButton.disabled=false;
+  nextPronunciationButton.classList.remove("hidden");
 }
 
 
@@ -2172,4 +2213,13 @@ document.addEventListener("visibilitychange",()=>{
   if(document.visibilityState==="hidden"){
     try{saveNow()}catch{}
   }
+});
+
+
+document.addEventListener("click",event=>{
+  const navButton=event.target.closest(".nav-btn");
+  if(!navButton)return;
+
+  event.preventDefault();
+  nav(navButton.dataset.route||"home");
 });

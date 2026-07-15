@@ -1,24 +1,13 @@
-# Español Step 2.1
+# Español Step 2.1.2
 
-## Praxistest- und Bugfix-Version
+## Behobene Bedienungsfehler
 
-- vollständige Startprüfung aller Hauptfunktionen
-- automatische Prüfung von Speicher, Sprachausgabe, Spracherkennung und Offline-PWA
-- sichere Wiederherstellung nach Browser-Rückkehr aus dem Hintergrund
-- gemeinsames Beenden laufender Sprach-, Mikrofon- und Gesprächssitzungen
-- unbekannte Trainingsmodi fallen sicher auf den Vokabeltrainer zurück
-- Lernstand wird beim Ausblenden oder Schließen sofort gespeichert
-- laufende Sitzungen können zurückgesetzt werden, ohne Lernfortschritt zu löschen
-- Update-Hinweis bei neuer Offline-Version
-- zusätzliche Diagnosefunktionen in den Einstellungen
-- erneute vollständige Daten-, Syntax- und Regressionstests
-
-## Inhalt
-
-- 2.500 Vokabeln und Wendungen
-- 250 geführte Gespräche
-- 250 freie Gespräche
-- 800 Grammatikaufgaben A1–B2
-- Aussprachetrainer
-- persönlicher Lerncoach
-- Offline-PWA
+- untere Hauptleiste funktioniert wieder in allen Übungen
+- Start, Coach, Training, Fortschritt und Optionen sind jederzeit erreichbar
+- falscher Klassenname der Navigationsschaltflächen korrigiert
+- blockierende Navigationssperre entfernt
+- laufende Sprachausgabe, Aufnahme und Gespräche werden beim Wechsel sauber beendet
+- Aussprachetrainer wechselt zuverlässig zum nächsten Satz
+- Aufnahmezustand wird vor dem Satzwechsel vollständig zurückgesetzt
+- derselbe Aussprache-Satz wird nicht unmittelbar erneut angezeigt
+- Navigationsleiste bleibt über dem Übungsinhalt anklickbar
