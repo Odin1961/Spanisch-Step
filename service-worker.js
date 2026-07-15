@@ -1,4 +1,4 @@
-const CACHE="espanol-step-1.4";
+const CACHE="espanol-step-2.1";
 const CORE=[
   "./","./index.html","./style.css","./manifest.webmanifest",
   "./icon-180.png","./icon-512.png","./content.js",
@@ -40,7 +40,12 @@ const CORE=[
   "./dialogues-branching-es-0.2.js",
   "./vocabulary-es-0.2.js","./vocabulary.js","./coach.js",
   "./grammar.js","./grammar-error-tracker.js",
-  "./grammar-coach-1.6.4.js","./app.js"
+  "./grammar-coach-1.6.4.js","./pronunciation.js",
+  "./stability.js",
+  "./polish.js",
+  "./update-manager.js",
+  "./runtime-health.js",
+  "./app.js"
 ];
 self.addEventListener("install",event=>{
   self.skipWaiting();
@@ -53,9 +58,30 @@ self.addEventListener("activate",event=>{
 });
 self.addEventListener("fetch",event=>{
   if(event.request.method!=="GET")return;
-  event.respondWith(fetch(event.request,{cache:"no-store"}).then(response=>{
-    const copy=response.clone();
-    caches.open(CACHE).then(cache=>cache.put(event.request,copy));
-    return response;
-  }).catch(()=>caches.match(event.request)).then(response=>response||caches.match("./index.html")));
+
+  event.respondWith((async()=>{
+    const cached=await caches.match(event.request);
+
+    try{
+      const response=await fetch(event.request);
+
+      if(response && response.ok){
+        const cache=await caches.open(CACHE);
+        cache.put(event.request,response.clone()).catch(()=>{});
+      }
+
+      return response;
+    }catch{
+      if(cached)return cached;
+
+      if(event.request.mode==="navigate"){
+        return caches.match("./index.html");
+      }
+
+      return new Response(
+        "Offline und nicht im Cache verfügbar.",
+        {status:503,statusText:"Offline"}
+      );
+    }
+  })());
 });

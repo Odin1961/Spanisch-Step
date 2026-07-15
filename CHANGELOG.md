@@ -1,5 +1,60 @@
 # Changelog
 
+## 2.1
+- Runtime-Startprüfung ergänzt
+- sichere Sitzungswiederherstellung ergänzt
+- aktives Training wird bei Navigation vollständig beendet
+- sofortige Speicherung beim Ausblenden ergänzt
+- Update-Hinweis für neue Offline-Versionen ergänzt
+- zusätzliche Regressionstests durchgeführt
+
+## 2.0
+- fehlende Ausspracheansicht vollständig wiederhergestellt
+- UI-, Bedienungs- und Performance-Feinschliff
+- Schnellstart und Tastaturbedienung ergänzt
+- mobile Darstellung und Barrierefreiheit verbessert
+- Cache-Bereinigung und Offline-Stabilität erweitert
+- vollständige stabile Hauptversion
+
+## 1.9
+- Coach-Priorisierung verfeinert
+- Recency-Gewichtung und Dringlichkeit ergänzt
+- Tagespläne besser an Lernzeit angepasst
+- Wiederholungen von Trainingsarten weiter reduziert
+- Wochenübersicht und abgeschlossene Tagespläne ergänzt
+- Empfehlungen präziser formuliert
+
+## 1.8
+- Gesprächsengine um freie Vertiefungsphasen erweitert
+- thematische Rückfragen und Bestätigungen ergänzt
+- fünf freie Gesprächsrunden je Situation
+- sichtbarer Rundenzähler und Gesprächsphase
+- verbesserter Szenenwechsel und Wiederholungsschutz
+
+## 1.7
+- vollständige Stabilitäts- und Fehlerbehandlung ergänzt
+- Navigation und Render-Ablauf abgesichert
+- gespeicherte Daten werden automatisch geprüft
+- robuster Service Worker und Offline-Fallback
+- Funktionsdiagnose in den Einstellungen ergänzt
+- globale Fehlerprotokollierung ergänzt
+
+## 1.6
+- persönlicher adaptiver Lerncoach neu aufgebaut
+- Schwächenanalyse über alle Trainingsbereiche
+- Tagespläne mit wählbarer Lernzeit
+- Lernserie und Sitzungshistorie ergänzt
+- Empfehlungen und direkter Trainingsstart ergänzt
+- Aussprache vollständig in den Coach-Ablauf integriert
+
+## 1.5
+- Aussprachetrainer ergänzt
+- vollständige Mikrofonaufnahme und Spracherkennung
+- Sollsatzvergleich und Wortauswertung
+- Bewertung, Bestwerte und Fortschritt ergänzt
+- Sprachvarianten Spanien und Lateinamerika unterstützt
+- Kompatibilitätskorrektur für den Vokabelstatus ergänzt
+
 ## 1.3
 - Vokabeltrainer mit Sitzungswarteschlange neu aufgebaut
 - Spaced Repetition ergänzt

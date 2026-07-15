@@ -14,6 +14,8 @@ const VocabularyEngine={
     localStorage.setItem(this.storageKey,JSON.stringify(data));
   },
 
+  getState(id){return this.stateFor(id)},
+
   stateFor(id){
     const all=this.load();
     return all[id] || {

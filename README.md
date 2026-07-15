@@ -1,22 +1,24 @@
-# Español Step 1.4
+# Español Step 2.1
 
-## Stabilisierung und Grammatik
+## Praxistest- und Bugfix-Version
 
-- vollständige Navigation und alle Hauptansichten wiederhergestellt
-- Startseite, freies Training, Coach, Fortschritt und Einstellungen geprüft
-- Vokabel-, Grammatik-, Gesprächs- und Übersetzungsmodus wieder erreichbar
-- Grammatiktrainer mit vollständiger Sitzungswarteschlange
-- keine unmittelbaren Aufgabenwiederholungen
-- schwierige und fällige Grammatikaufgaben werden priorisiert
-- Erklärung und sichtbare Auswertung nach jeder Antwort
-- Themenfortschritt mit Trefferquote und Beherrschungsstand
-- ungültig gespeicherte Themen werden automatisch korrigiert
-- doppelte Bewertung einer Aufgabe wird verhindert
-- spanische Sprachvarianten Spanien und Lateinamerika bleiben erhalten
+- vollständige Startprüfung aller Hauptfunktionen
+- automatische Prüfung von Speicher, Sprachausgabe, Spracherkennung und Offline-PWA
+- sichere Wiederherstellung nach Browser-Rückkehr aus dem Hintergrund
+- gemeinsames Beenden laufender Sprach-, Mikrofon- und Gesprächssitzungen
+- unbekannte Trainingsmodi fallen sicher auf den Vokabeltrainer zurück
+- Lernstand wird beim Ausblenden oder Schließen sofort gespeichert
+- laufende Sitzungen können zurückgesetzt werden, ohne Lernfortschritt zu löschen
+- Update-Hinweis bei neuer Offline-Version
+- zusätzliche Diagnosefunktionen in den Einstellungen
+- erneute vollständige Daten-, Syntax- und Regressionstests
 
-## Umfang
+## Inhalt
 
 - 2.500 Vokabeln und Wendungen
-- 250 verzweigte Gespräche
+- 250 geführte Gespräche
 - 250 freie Gespräche
 - 800 Grammatikaufgaben A1–B2
+- Aussprachetrainer
+- persönlicher Lerncoach
+- Offline-PWA
