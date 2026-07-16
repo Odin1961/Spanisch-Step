@@ -1,13 +1,11 @@
-# Español Step 2.1.2
+# English Step 1.6.4.4 – Stabilisierung
 
-## Behobene Bedienungsfehler
+Direkt auf dem hochgeladenen GitHub-Repository repariert.
 
-- untere Hauptleiste funktioniert wieder in allen Übungen
-- Start, Coach, Training, Fortschritt und Optionen sind jederzeit erreichbar
-- falscher Klassenname der Navigationsschaltflächen korrigiert
-- blockierende Navigationssperre entfernt
-- laufende Sprachausgabe, Aufnahme und Gespräche werden beim Wechsel sauber beendet
-- Aussprachetrainer wechselt zuverlässig zum nächsten Satz
-- Aufnahmezustand wird vor dem Satzwechsel vollständig zurückgesetzt
-- derselbe Aussprache-Satz wird nicht unmittelbar erneut angezeigt
-- Navigationsleiste bleibt über dem Übungsinhalt anklickbar
+- kuratierter Wortschatz wird nicht mehr beim Start überschrieben
+- vollständige Vokabel-Warteschlange ohne unmittelbare Wiederholungen
+- vollständige Grammatik-Warteschlange mit Datenvalidierung
+- fortlaufende Gespräche bis zum manuellen Beenden
+- Antworten werden vor der nächsten Gesprächszeile vollständig gesprochen
+- Network-first Service Worker gegen alte JavaScript-Dateien
+- Aufbau und Design unverändert

@@ -1,0 +1,3 @@
+JavaScript syntax: OK
+Runtime data test: OK
+{"vocabUnique40":40,"grammarUnique20":20,"branching":200,"grammarTotal":258}

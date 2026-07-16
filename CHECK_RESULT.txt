@@ -1,0 +1,6 @@
+OK: app.js
+OK: coach.js
+OK: content.js
+OK: vocabulary.js
+OK: grammar.js
+OK: service-worker.js
