@@ -1,5 +1,5 @@
 const GrammarErrorTracker = {
-  key: "englishStepGrammarTopicStats",
+  key: "espanolStepGrammarTopicStats01",
 
   load(){
     try{return JSON.parse(localStorage.getItem(this.key)) || {}}catch{return {}}
